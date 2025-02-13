@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $user = [
-            'name' => 'user3',
-            'email' => 'user@mail.ru3',
+            'name' => 'user',
+            'email' => 'user@mail.ru',
             'password' => Hash::make(12345678)
         ];
 
