@@ -16,7 +16,7 @@
             </div>
             <div class="mb-4">
                 <a @click.prevent="storeCategory"
-                    class="inline-block py-2 px-3 bg-indigo-600 border border-indigo-700 text-white" href="#">Create</a>
+                    class="inline-block py-2 px-3 bg-indigo-600 border border-indigo-700 text-white" href="#">Save</a>
             </div>
         </div>
     </div>
@@ -27,30 +27,23 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
 export default {
-    name: "Create",
+    name: "Edit",
     layout: AdminLayout,
     components: {
         Link
     },
 
     props: {
+        category: Object, 
         categories: Array
     },
-    data() {
-        return {
-            category: {
-                parent_id: null
-            }
-        }
-    },
+
 
     methods: {
         storeCategory() {
-            axios.post(route('admin.categories.store'), this.category)
+            axios.patch(route('admin.categories.update', this.category), this.category)
                 .then(res => {
-                    this.category = {
-                        parent_id : null
-                    }
+
                 })
         }
     }

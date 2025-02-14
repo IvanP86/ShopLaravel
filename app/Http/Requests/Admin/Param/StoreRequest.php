@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Param;
 
+use App\Enums\Param\ParamFilterTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,8 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'filter_type' => 'required|integer|in:'.ParamFilterTypeEnum::valuesAsString()
         ];
     }
 }

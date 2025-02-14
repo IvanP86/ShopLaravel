@@ -14,6 +14,11 @@ class ParamResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'filter_type' => $this->filter_type,
+            'filter_type_title' => $this->filter_type_title
+        ];
     }
 }
