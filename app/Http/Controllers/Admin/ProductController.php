@@ -52,7 +52,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product = ProductResource::make($product)->resolve();
-        return inertia('Admin/Product/Show');
+        return inertia('Admin/Product/Show', compact('product'));
     }
 
     /**

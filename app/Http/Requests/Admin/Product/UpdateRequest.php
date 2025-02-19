@@ -29,7 +29,9 @@ class UpdateRequest extends FormRequest
             'product.old_price' => 'numeric',
             'product.qty' => 'required|integer',
             'product.category_id' => 'required|integer|exists:categories,id',
-            'product.product_group_id' => 'required|integer|exists:product_groups,id'
+            'product.product_group_id' => 'required|integer|exists:product_groups,id',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|file'
         ];
     }
 }

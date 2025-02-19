@@ -6,9 +6,9 @@
         </div>
         <div v-if="success" class="mb-4 p-4 bg-green-100">
             Save was success !
-        </div>        
+        </div>
         <div>
-          <div class="mb-4">
+            <div class="mb-4">
                 <input type="text" v-model="entries.product.title" class="border border-gray-200 p-2 w-1/4"
                     placeholder="title">
             </div>
@@ -44,10 +44,20 @@
                     <option v-for="productGroup in productGroups" :value="productGroup.id">{{ productGroup.title }}</option>
                 </select>
             </div>
-<!--            <div class="mb-4">
-                <input type="file" v-model="entries.images" class="border border-gray-200 p-2 w-1/4">
-            </div>-->
-<!--            <div class="mb-4">
+            <div class="mb-4">
+                <input @change="setImages" type="file" multiple class="border border-gray-200 p-2 w-1/4">
+            </div>
+            <div class="mb-4">
+                <div class="grid grid-cols-3 gap-x-4 ">
+                    <div v-for="image in product.images">
+                        <img :src="image.url" alt="product.title" class="mb-2">
+                        <div class="text-center">
+                            <a @click.prevent="deleteImage(image)" href="#" class="inline-block px-2 py-1 text-sm bg-red-800 text-gray-200 border border-red-900" >Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="mb-4">
                 <select class="border border-gray-200 p-2 w-1/4" v-model="entries.product.group_id">
                     <option value="null" disabled selected>Choose group</option>
                     <option v-for="productGroup in productGroups" :value="productGroup.id">{{ productGroup.title }}</option>
@@ -81,8 +91,9 @@ export default {
         return {
             success: false,
             entries: {
-                product: this.product
-                // images: null,
+                product: this.product,
+                images: null,
+                _method: 'patch',
                 // params: []
             }
         }
@@ -90,10 +101,24 @@ export default {
 
     methods: {
         updateProduct() {
-            axios.patch(route('admin.products.update', this.product.id), this.entries)
+            axios.post(route('admin.products.update', this.product.id), this.entries, {
+                headers: {
+                    "Content-Type" : "multipart/form-data"
+                }
+            })
                 .then(res => {
+                    this.product.images = res.data.images
                     this.success = true
                 })
+        },
+        deleteImage(image){
+            axios.delete(route('admin.images.destroy', image.id))
+            .then(res => {
+                this.product.images = this.product.images.filter(productImage => productImage.id !== image.id)
+            })
+        },
+        setImages(e) {
+            this.entries.images = e.target.files
         }
     }
 }

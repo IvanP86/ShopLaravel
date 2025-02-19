@@ -5,7 +5,7 @@
                 class="inline-block py-2 px-3 bg-sky-600 border border-sky-700 text-white">Products</Link>
         </div>
         <div>
-          <div class="mb-4">
+            <div class="mb-4">
                 <input type="text" v-model="entries.product.title" class="border border-gray-200 p-2 w-1/4"
                     placeholder="title">
             </div>
@@ -41,10 +41,10 @@
                     <option v-for="productGroup in productGroups" :value="productGroup.id">{{ productGroup.title }}</option>
                 </select>
             </div>
-<!--            <div class="mb-4">
-                <input type="file" v-model="entries.images" class="border border-gray-200 p-2 w-1/4">
-            </div>-->
-<!--            <div class="mb-4">
+            <div class="mb-4">
+                <input @change="setImages" type="file" multiple class="border border-gray-200 p-2 w-1/4">
+            </div>
+            <!--            <div class="mb-4">
                 <select class="border border-gray-200 p-2 w-1/4" v-model="entries.product.group_id">
                     <option value="null" disabled selected>Choose group</option>
                     <option v-for="productGroup in productGroups" :value="productGroup.id">{{ productGroup.title }}</option>
@@ -81,7 +81,7 @@ export default {
                     product_group_id: null
 
                 },
-                // images: null,
+                images: null,
                 // params: []
             }
         }
@@ -89,13 +89,20 @@ export default {
 
     methods: {
         storeProduct() {
-            axios.post(route('admin.products.store'), this.entries)
+            axios.post(route('admin.products.store'), this.entries, {
+                headers: {
+                    "Content-Type" : "multipart/form-data"
+                }
+            })
                 .then(res => {
                     this.entries.product = {
-                         category_id: null,
-                         product_group_id: null
+                        category_id: null,
+                        product_group_id: null
                     }
                 })
+        },
+        setImages(e) {
+            this.entries.images = e.target.files
         }
     }
 }

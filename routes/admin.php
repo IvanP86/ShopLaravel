@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ParamController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGroupController;
@@ -14,6 +15,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', IsAdminMiddleware::c
     Route::resource('params', ParamController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('product-groups', ProductGroupController::class)->parameters(['product-groups' => 'productGroup']);
+
+    Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
 
     // Route::get('product-parents', [ProductParentController::class, 'index'])->name('product_parents.index');
 });
