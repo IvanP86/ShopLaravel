@@ -46,7 +46,7 @@
                 </select>
             </div>
             <div class="mb-4">
-                <input @change="setImages" type="file" multiple class="border border-gray-200 p-2 w-1/4">
+                <input ref="image_input" @change="setImages" type="file" multiple class="border border-gray-200 p-2 w-1/4">
             </div>
             <div class="mb-4 flex">
                 <div class="mr-2">
@@ -59,7 +59,8 @@
                     <input v-model="paramOption.value" type="text" class="border border-gray-200 p-2" placeholder="value">
                 </div>
                 <div>
-                    <a href="#" @click.prevent="setParam" class="inline-block bg-white border border-gray-200 px-3 py-2">+</a>
+                    <a href="#" @click.prevent="setParam"
+                        class="inline-block bg-white border border-gray-200 px-3 py-2">+</a>
                 </div>
             </div>
             <div class="mb-4">
@@ -113,14 +114,20 @@ export default {
         storeProduct() {
             axios.post(route('admin.products.store'), this.entries, {
                 headers: {
-                    "Content-Type" : "multipart/form-data"
+                    "Content-Type": "multipart/form-data"
                 }
             })
                 .then(res => {
-                    this.entries.product = {
-                        category_id: null,
-                        product_group_id: null
+                    this.entries = {
+                        product: {
+                            category_id: null,
+                            product_group_id: null
+
+                        },
+                        images: [],
+                        params: []
                     }
+                    this.$refs.image_input.value = null
                 })
         },
         setImages(e) {
@@ -138,10 +145,11 @@ export default {
 </script>
 
 <style scoped>
- .black {
-   background: #000000
- }
- .greeen {
+.black {
+    background: #000000
+}
+
+.greeen {
     background: #00bd71
- }
+}
 </style>
