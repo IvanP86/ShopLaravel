@@ -11,4 +11,9 @@ class Product extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    public function params()
+    {
+        return $this->belongsToMany(Param::class);
+    }
 }

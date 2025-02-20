@@ -10,6 +10,10 @@
                     placeholder="title">
             </div>
             <div class="mb-4">
+                <input type="text" v-model="entries.product.article" class="border border-gray-200 p-2 w-1/4"
+                    placeholder="article">
+            </div>
+            <div class="mb-4">
                 <textarea type="text" v-model="entries.product.description" class="border border-gray-200 p-2 w-1/4"
                     placeholder="description"></textarea>
             </div>
@@ -44,12 +48,26 @@
             <div class="mb-4">
                 <input @change="setImages" type="file" multiple class="border border-gray-200 p-2 w-1/4">
             </div>
-            <!--            <div class="mb-4">
-                <select class="border border-gray-200 p-2 w-1/4" v-model="entries.product.group_id">
-                    <option value="null" disabled selected>Choose group</option>
-                    <option v-for="productGroup in productGroups" :value="productGroup.id">{{ productGroup.title }}</option>
-                </select>
-            </div>-->
+            <div class="mb-4 flex">
+                <div class="mr-2">
+                    <select v-model="paramOption.paramObj" class="border border-gray-200 p-2 pr-8">
+                        <option value="{}" disabled selected>Choose param</option>
+                        <option v-for="param in params" :value="param">{{ param.title }}</option>
+                    </select>
+                </div>
+                <div class="mr-2">
+                    <input v-model="paramOption.value" type="text" class="border border-gray-200 p-2" placeholder="value">
+                </div>
+                <div>
+                    <a href="#" @click.prevent="setParam" class="inline-block bg-white border border-gray-200 px-3 py-2">+</a>
+                </div>
+            </div>
+            <div class="mb-4">
+                <div v-for="paramEntries in entries.params">
+                    {{ paramEntries.title }} - {{ paramEntries.value }}
+                </div>
+
+            </div>
             <div class="mb-4">
                 <a @click.prevent="storeProduct"
                     class="inline-block py-2 px-3 bg-indigo-600 border border-indigo-700 text-white" href="#">Create</a>
@@ -72,17 +90,21 @@ export default {
     props: {
         categories: Array,
         productGroups: Array,
+        params: Array
     },
     data() {
         return {
+            paramOption: {
+                paramObj: {}
+            },
             entries: {
                 product: {
                     category_id: null,
                     product_group_id: null
 
                 },
-                images: null,
-                // params: []
+                images: [],
+                params: []
             }
         }
     },
@@ -103,9 +125,23 @@ export default {
         },
         setImages(e) {
             this.entries.images = e.target.files
+        },
+        setParam() {
+            this.entries.params.push({
+                id: this.paramOption.paramObj.id,
+                title: this.paramOption.paramObj.title,
+                value: this.paramOption.value,
+            })
         }
     }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+ .black {
+   background: #000000
+ }
+ .greeen {
+    background: #00bd71
+ }
+</style>
