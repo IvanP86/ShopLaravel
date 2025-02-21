@@ -18,7 +18,7 @@ class Product extends Model
 
     public function params(): BelongsToMany
     {
-        return $this->belongsToMany(Param::class);
+        return $this->belongsToMany(Param::class)->withPivot('value');
     }
 
     public function children(): HasMany

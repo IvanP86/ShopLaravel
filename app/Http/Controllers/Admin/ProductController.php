@@ -23,8 +23,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        $products = ProductResource::collection($products)->resolve();
+        $products = ProductResource::collection(Product::all())->resolve();
         return inertia('Admin/Product/Index', compact('products'));
     }
 
@@ -65,8 +64,9 @@ class ProductController extends Controller
     {
         $product = ProductResource::make($product)->resolve();
         $categories = CategoryResource::collection(Category::all())->resolve();
-        $productGroups = ProductGroupResource::collection(ProductGroup::all())->resolve();       
-        return inertia('Admin/Product/Edit', compact('product', 'categories', 'productGroups'));
+        $productGroups = ProductGroupResource::collection(ProductGroup::all())->resolve();
+        $params = ParamResource::collection(Param::all())->resolve();       
+        return inertia('Admin/Product/Edit', compact('product', 'categories', 'productGroups', 'params'));
     }
 
     /**
@@ -74,7 +74,7 @@ class ProductController extends Controller
      */
     public function update(UpdateRequest $request, Product $product)
     {
-        $data = $request->validated();
+        $data = $request->validationData();
         $product = ProductService::update($product, $data);
         return ProductResource::make($product)->resolve();
     }

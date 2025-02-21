@@ -17,6 +17,7 @@ class ProductService
     public static function update(Product $product, array $data): Product
     {
         $product->update($data['product']);
+        ProductService::syncBatchParams($product, $data);
         ImageService::storeImages($product, $data);
         return $product->fresh();
     }
@@ -28,5 +29,10 @@ class ProductService
                 'value' => $param['value']
             ]);
         }
+    }
+    public static function syncBatchParams(Product $product, array $data): void
+    {
+        $product->params()->detach();
+        ProductService::attachBatchParams($product, $data);
     }
 }

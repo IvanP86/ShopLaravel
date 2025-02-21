@@ -64,8 +64,17 @@
                 </div>
             </div>
             <div class="mb-4">
-                <div v-for="paramEntries in entries.params">
-                    {{ paramEntries.title }} - {{ paramEntries.value }}
+                <div v-for="paramEntries in entries.params" class="flex items-center mb-2">
+                    <div class="mr-2">
+                        {{ paramEntries.title }} - {{ paramEntries.value }}
+                    </div>
+                    <div>
+                        <svg @click="removeParam(paramEntries)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="cursor-pointer size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </div>
                 </div>
 
             </div>
@@ -139,6 +148,9 @@ export default {
                 title: this.paramOption.paramObj.title,
                 value: this.paramOption.value,
             })
+        },
+        removeParam(paramEntries) {
+            this.entries.params = this.entries.params.filter(param => param !== paramEntries)
         }
     }
 }
