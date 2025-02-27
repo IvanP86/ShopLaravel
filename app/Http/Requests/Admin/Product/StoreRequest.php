@@ -29,6 +29,7 @@ class StoreRequest extends FormRequest
             'product.price' => 'required|numeric',
             'product.old_price' => 'numeric',
             'product.qty' => 'required|integer',
+            'product.parent_id' => 'nullable|integer|exists:products,id',
             'product.category_id' => 'required|integer|exists:categories,id',
             'product.product_group_id' => 'required|integer|exists:product_groups,id',
             'images' => 'nullable|array',
@@ -44,7 +45,7 @@ class StoreRequest extends FormRequest
         $validated = $this->validated();
         return $this->merge([
             'product' => $validated['product'],
-            'params' => $validated['params'],
+            'params' => $validated['params'] ?? [],
             'images' => $this->images ?? []
         ]);
     }
