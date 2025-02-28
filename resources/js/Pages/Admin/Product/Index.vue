@@ -18,9 +18,9 @@
                 </thead>
                 <tbody>
                     <template v-for="product in productsData">
-                        <ProductItem @product_children_got="updateProductChildrenData" @product_deleted="updateProductData" :product="product"></ProductItem>
-                        <template v-if="product.productChild" v-for="productChild in product.productChild">
-                            <ProductItem @product_deleted="updateProductChildrenData" :product="productChild" :isChild="true"></ProductItem>
+                        <ProductItem @product_deleted="updateProductData" :product="product"></ProductItem>
+                        <template v-if="product.children" v-for="productChild in product.children">
+                            <ProductItem @product_deleted="updateProductData" :product="productChild"></ProductItem>
                         </template>
                     </template>
                 </tbody>
@@ -55,6 +55,14 @@ export default {
 
     methods: {
         updateProductData(product) {
+            if(product.parent_id){
+                this.productsData.forEach(productData => {
+                    if(productData.id === product.parent_id){
+                        productData.children = productData.children.filter(child => child.id !== product.id)
+                    }
+                })
+                return
+            }
             this.productsData = this.productsData.filter(productData => productData.id !== product.id)
         },
     }

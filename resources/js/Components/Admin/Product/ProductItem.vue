@@ -29,12 +29,12 @@
 
         </td>
         <td class="border border-gray-300 px-4 py-2">
-            <svg v-if="!isChild && is_closed" @click="getProductChildren" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
+            <svg v-if="!product.parent_id && is_closed" @click="getProductChildren" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
             </svg>
-           <svg v-if="!isChild && !is_closed" @click="getProductChildren" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                class="size-6 cursor-pointer">
+            <svg v-if="!product.parent_id && !is_closed" @click="closeProductChildren" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
             </svg>
 
@@ -51,7 +51,6 @@ export default {
 
     props: {
         product: Object,
-        isChild: Boolean
     },
 
     components: {
@@ -72,16 +71,15 @@ export default {
                 })
         },
         getProductChildren() {
-            if (!this.is_closed) {
-                this.is_closed = true
-                this.product.productChild = null
-                return
-            }
             axios.get(route('admin.products.children.index', this.product.id))
                 .then(res => {
                     this.is_closed = false
-                    this.product.productChild = res.data
+                    this.product.children = res.data
                 })
+        },
+        closeProductChildren() {
+            this.is_closed = true
+            this.product.children = null
         }
     }
 }
