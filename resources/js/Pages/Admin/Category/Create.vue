@@ -11,7 +11,7 @@
             <div class="mb-4">
                 <select class="border border-gray-200 p-2 w-1/4" v-model="category.parent_id">
                     <option value="null" disabled selected>Choose category</option>
-                    <option  v-for="category in categories" :value="category.id">{{ category.title }}</option>
+                    <option v-for="category in categories" :value="category.id">{{ category.title }}</option>
                 </select>
             </div>
             <div class="mb-4">
@@ -48,8 +48,9 @@ export default {
         storeCategory() {
             axios.post(route('admin.categories.store'), this.category)
                 .then(res => {
+                    this.categories.push(res.data)
                     this.category = {
-                        parent_id : null
+                        parent_id: null
                     }
                 })
         }
