@@ -8,22 +8,37 @@
             <div class="mb-4">
                 <input type="text" v-model="entries.product.title" class="border border-gray-200 p-2 w-1/4"
                     placeholder="title">
+                <div v-if="errors['product.title']" class="text-red-600">
+                    <p v-for="error in errors['product.title']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <input type="text" v-model="entries.product.article" class="border border-gray-200 p-2 w-1/4"
                     placeholder="article">
+                <div v-if="errors['product.article']" class="text-red-600">
+                    <p v-for="error in errors['product.article']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <textarea type="text" v-model="entries.product.description" class="border border-gray-200 p-2 w-1/4"
                     placeholder="description"></textarea>
+                <div v-if="errors['product.description']" class="text-red-600">
+                    <p v-for="error in errors['product.description']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <textarea type="text" v-model="entries.product.content" class="border border-gray-200 p-2 w-1/4"
                     placeholder="content"></textarea>
+                <div v-if="errors['product.content']" class="text-red-600">
+                    <p v-for="error in errors['product.content']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <input type="number" v-model="entries.product.price" class="border border-gray-200 p-2 w-1/4"
                     placeholder="price">
+                <div v-if="errors['product.price']" class="text-red-600">
+                    <p v-for="error in errors['product.price']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <input type="number" v-model="entries.product.old_price" class="border border-gray-200 p-2 w-1/4"
@@ -32,18 +47,27 @@
             <div class="mb-4">
                 <input type="number" v-model="entries.product.qty" class="border border-gray-200 p-2 w-1/4"
                     placeholder="quantity">
+                <div v-if="errors['product.qty']" class="text-red-600">
+                    <p v-for="error in errors['product.qty']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <select class="border border-gray-200 p-2 w-1/4" v-model="entries.product.category_id">
                     <option value="null" disabled selected>Choose category</option>
                     <option v-for="category in categories" :value="category.id">{{ category.title }}</option>
                 </select>
+                <div v-if="errors['product.category_id']" class="text-red-600">
+                    <p v-for="error in errors['product.category_id']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <select class="border border-gray-200 p-2 w-1/4" v-model="entries.product.product_group_id">
                     <option value="null" disabled selected>Choose group</option>
                     <option v-for="productGroup in productGroups" :value="productGroup.id">{{ productGroup.title }}</option>
                 </select>
+                <div v-if="errors['product.product_group_id']" class="text-red-600">
+                    <p v-for="error in errors['product.product_group_id']">{{ error }}</p>
+                </div>
             </div>
             <div class="mb-4">
                 <input ref="image_input" @change="setImages" type="file" multiple class="border border-gray-200 p-2 w-1/4">
@@ -69,8 +93,8 @@
                         {{ paramEntries.title }} - {{ paramEntries.value }}
                     </div>
                     <div>
-                        <svg @click="removeParam(paramEntries)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="cursor-pointer size-6">
+                        <svg @click="removeParam(paramEntries)" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="cursor-pointer size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
@@ -104,6 +128,7 @@ export default {
     },
     data() {
         return {
+            errors: [],
             paramOption: {
                 paramObj: {}
             },
@@ -137,6 +162,9 @@ export default {
                         params: []
                     }
                     this.$refs.image_input.value = null
+                })
+                .catch(e => {
+                    this.errors = e.response.data.errors
                 })
         },
         setImages(e) {
