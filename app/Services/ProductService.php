@@ -3,22 +3,38 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
     public static function store(array $data): Product
     {
-        $product = Product::create($data['product']);
-        ProductService::attachBatchParams($product, $data);
-        ImageService::storeImages($product, $data);
+        try {
+            DB::beginTransaction();
+            $product = Product::create($data['product']);
+            ProductService::attachBatchParams($product, $data);
+            ImageService::storeImages($product, $data);
+            DB::commit();
+        } catch (Exception $exception) {
+            abort(500, 'Admin product store failed');
+            DB::rollBack();
+        }
         return $product;
     }
 
     public static function update(Product $product, array $data): Product
     {
-        $product->update($data['product']);
-        ProductService::syncBatchParams($product, $data);
-        ImageService::storeImages($product, $data);
+        try {
+            DB::beginTransaction();
+            $product->update($data['product']);
+            ProductService::syncBatchParams($product, $data);
+            ImageService::storeImages($product, $data);
+            DB::commit();
+        } catch (Exception $exception) {
+            abort(500, 'Admin product update failed');
+            DB::rollBack();
+        }
         return $product->fresh();
     }
 

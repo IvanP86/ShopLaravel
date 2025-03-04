@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use SebastianBergmann\Type\NullType;
 
 #[ObservedBy(ProductObserver::class)]
 class Product extends Model
@@ -24,5 +25,10 @@ class Product extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Product::class, 'parent_id', 'id');
+    }
+
+    public function getPreviewImageUrlAttribute(): null|string
+    {
+        return $this->images()->first()->url ?? null;
     }
 }
