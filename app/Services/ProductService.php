@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Product;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -36,6 +37,11 @@ class ProductService
             DB::rollBack();
         }
         return $product->fresh();
+    }
+
+    public static function getIdsChildrenWithParentCategory(array $categories): Collection
+    {
+        return Product::categoryWithChildren($categories)->whereNull('parent_id')->get();
     }
 
     public static function attachBatchParams(Product $product, array $data): void

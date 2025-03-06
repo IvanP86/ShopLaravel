@@ -5,8 +5,17 @@
         </nav>
     </aside>
     <article class="w-3/4 bg-gray-50 p-4">
+        <div class="mb-4">
+            <template v-for="breadcrumb in breadCrumbs" :key="breadcrumb">
+                <Link :href="route('client.categories.products.index', breadcrumb.id)">
+                {{ breadcrumb.title }}
+                </Link>
+                <span> / </span>
+            </template>
+            <span>{{ category.title }}</span>
+        </div>
         <div class="grid grid-cols-3 gap-4">
-            <ProductItem v-for="product in products" :product="product"></ProductItem>
+            <ProductItem v-for="product in products" :product="product" :key="product"></ProductItem>
         </div>
     </article>
 </template>
@@ -25,7 +34,9 @@ export default {
     },
 
     props: {
-        products: Array
+        products: Array,
+        breadCrumbs: Array,
+        category: Object
     }
 }
 </script>

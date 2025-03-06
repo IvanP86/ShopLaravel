@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use SebastianBergmann\Type\NullType;
+use Illuminate\Database\Eloquent\Builder;
 
 #[ObservedBy(ProductObserver::class)]
 class Product extends Model
@@ -30,5 +30,10 @@ class Product extends Model
     public function getPreviewImageUrlAttribute(): null|string
     {
         return $this->images()->first()->url ?? null;
+    }
+
+    public function scopeCategoryWithChildren(Builder $builder, $categories)
+    {
+        $builder->whereIn('category_id', array_column($categories, 'id'));
     }
 }
