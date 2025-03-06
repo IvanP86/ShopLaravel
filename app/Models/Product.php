@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 #[ObservedBy(ProductObserver::class)]
 class Product extends Model
@@ -32,8 +33,8 @@ class Product extends Model
         return $this->images()->first()->url ?? null;
     }
 
-    public function scopeCategoryWithChildren(Builder $builder, $categories)
+    public function scopeCategoryWithChildren(Builder $builder, Collection $categories)
     {
-        $builder->whereIn('category_id', array_column($categories, 'id'));
+        $builder->whereIn('category_id', $categories->pluck('id'));
     }
 }

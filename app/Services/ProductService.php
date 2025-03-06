@@ -39,7 +39,7 @@ class ProductService
         return $product->fresh();
     }
 
-    public static function getIdsChildrenWithParentCategory(array $categories): Collection
+    public static function getIdsChildrenWithParentCategory(Collection $categories): Collection
     {
         return Product::categoryWithChildren($categories)->whereNull('parent_id')->get();
     }
