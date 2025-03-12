@@ -1,7 +1,39 @@
 <template>
     <aside class="w-1/4 bg-gray-900 min-h-screen">
-        <nav>
-
+        <nav class="p-4">
+            <div>
+                <template v-for="param in params" :key="param">
+                    <div v-if="param.filter_type === 3" class="mb-4 pb-4 border-b border-gray-600">
+                        <div>
+                            <h3 class="text-white mb-2">{{ param.title }}</h3>
+                        </div>
+                        <div>
+                            <div v-for="value in param.param_values" :key="value" class="mb-2 flex items-center">
+                                <input @change="setFilter(param, value)" class="mr-2" type="checkbox" :value="value"
+                                    :id="value">
+                                <label class="text-sm text-gray-300" :for="value">{{ value }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="param.filter_type === 1" class="mb-4 pb-4 border-b border-gray-600">
+                        <div>
+                            <h3 class="text-white mb-2">{{ param.title }}</h3>
+                        </div>
+                        <div>
+                            <div class="mb-2 flex items-center">
+                                <input v-model="filters.integer.from[param.id]" type="text" placeholder="first"
+                                    class="w-1/2 border border-gray-200 p-2">
+                                <input v-model="filters.integer.to[param.id]" type="text" placeholder="last"
+                                    class="w-1/2 border border-gray-200 p-2">
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <div>
+                    <a @click.prevent="getPosts" href="#"
+                        class="block text-center px-3 py-2 text-gray-300 bg-indigo-800 border border-indigo-900">Filter</a>
+                </div>
+            </div>
         </nav>
     </aside>
     <article class="w-3/4 bg-gray-50 p-4">
@@ -15,7 +47,7 @@
             <span>{{ category.title }}</span>
         </div>
         <div class="grid grid-cols-3 gap-4">
-            <ProductItem v-for="product in products" :product="product" :key="product"></ProductItem>
+            <ProductItem v-for="product in productsData" :product="product" :key="product"></ProductItem>
         </div>
     </article>
 </template>
@@ -36,7 +68,59 @@ export default {
     props: {
         products: Array,
         breadCrumbs: Array,
-        category: Object
+        category: Object,
+        params: Array
+    },
+
+    data() {
+        return {
+            productsData: this.products,
+            filters: {
+                integer: {
+                    from: {},
+                    to: {},
+                },
+                select: {},
+                checkbox: {}
+            }
+        }
+    },
+
+    methods: {
+        setFilter(param, value) {
+            if (this.filters.checkbox[param.id]) {
+                this.toggleItem(this.filters.checkbox[param.id], value)
+                return;
+            }
+            this.filters.checkbox[param.id] = []
+            this.filters.checkbox[param.id].push(value)
+        },
+
+        toggleItem(arr, value) {
+            let index = arr.indexOf(value)
+            index === -1 ? arr.push(value) : arr.splice(index, 1)
+        },
+
+        getPosts() {
+            this.clean(this.filters.integer.from)
+            this.clean(this.filters.integer.to)
+            axios.get(route('client.categories.products.index', this.category.id), {
+                params: {
+                    filters: this.filters,
+                }
+            })
+                .then(res => {
+                    this.productsData = res.data
+                })
+        },
+
+        clean(obj) {
+            Object.keys(obj).forEach(key => {
+                if (!obj[key]){
+                    delete obj[key]
+                }
+            })
+        }
     }
 }
 </script>

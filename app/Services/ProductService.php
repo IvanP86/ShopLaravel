@@ -39,11 +39,6 @@ class ProductService
         return $product->fresh();
     }
 
-    public static function getIdsChildrenWithParentCategory(Collection $categories): Collection
-    {
-        return Product::categoryWithChildren($categories)->whereNull('parent_id')->get();
-    }
-
     public static function attachBatchParams(Product $product, array $data): void
     {
         foreach ($data['params'] as $param) {
@@ -56,5 +51,39 @@ class ProductService
     {
         $product->params()->detach();
         ProductService::attachBatchParams($product, $data);
+    }
+    public static function getIdsChildrenWithParentCategory(Collection $categories, array $data): Collection
+    {
+        $products = Product::categoryWithChildren($categories)->whereNotNull('parent_id');
+        // $products = Product::categoryWithChildren($categories)->whereNull('parent_id');
+        if (isset($data['filters']['integer']['from'])) {
+            $products->whereHas('paramProducts', function ($q) use ($data) {
+                foreach ($data['filters']['integer']['from'] as $key => $value) {
+                    $q->where('param_id', $key)->where('value', '>=', $value);
+                }
+            });
+        }
+        if (isset($data['filters']['integer']['to'])) {
+            $products->whereHas('paramProducts', function ($q) use ($data) {
+                foreach ($data['filters']['integer']['to'] as $key => $value) {
+                    $q->where('param_id', $key)->where('value', '=<', $value);
+                }
+            });
+        }
+        if (isset($data['filters']['select'])) {
+            $products->whereHas('paramProducts', function ($q) use ($data) {
+                foreach ($data['filters']['select'] as $key => $value) {
+                    $q->where('param_id', $key)->where('value', $value);
+                }
+            });
+        }
+        if (isset($data['filters']['checkbox'])) {
+            $products->whereHas('paramProducts', function ($q) use ($data) {
+                foreach ($data['filters']['checkbox'] as $key => $value) {
+                    $q->where('param_id', $key)->whereIn('value', $value);
+                }
+            });
+        }
+        return $products->distinct('parent_id')->get();
     }
 }

@@ -37,4 +37,9 @@ class Product extends Model
     {
         $builder->whereIn('category_id', $categories->pluck('id'));
     }
+
+    public function paramProducts(): HasMany
+    {
+        return $this->hasMany(ParamProduct::class, 'product_id', 'id');
+    }
 }
