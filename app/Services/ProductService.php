@@ -57,4 +57,23 @@ class ProductService
         $products = Product::categoryWithChildren($categories)->whereNotNull('parent_id')->filter($data);
         return $products->distinct('parent_id')->get();
     }
+
+    public static function replicate(Product $product): Product
+    {
+        try {
+            DB::beginTransaction();
+            $cloneProduct = $product->replicate();
+            $cloneProduct->article = fake()->randomNumber(7);
+            $cloneProduct->parent_id = $product->id;
+            $cloneProduct->push();
+            ImageService::replicateBatch($product, $cloneProduct);
+            ParamProductService::replicateBatch($product, $cloneProduct);
+            DB::commit();
+        } catch (Exception $exception) {
+            abort(500, 'replicate transaction failed');
+            DB::rollBack();
+        }
+
+        return $cloneProduct;
+    }
 }

@@ -7,7 +7,8 @@
         <td class="border border-gray-300 px-4 py-2">{{ product.price }}</td>
         <td class="border border-gray-300 px-4 py-2">{{ product.qty }}</td>
         <td class="border border-gray-300 px-4 py-3 flex items-center">
-            <Link :href="route('admin.products.children.create', product.id)" class="mr-2">
+            <!--<Link :href="route('admin.products.children.create', product.id)" class="mr-2">-->
+            <Link :href="route('admin.products.replicate', product.id)" method="post" class="mr-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                 class="size-5">
                 <path stroke-linecap="round" stroke-linejoin="round"

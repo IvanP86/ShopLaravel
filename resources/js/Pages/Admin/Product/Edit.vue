@@ -13,6 +13,10 @@
                     placeholder="title">
             </div>
             <div class="mb-4">
+                <input type="text" v-model="entries.product.article" class="border border-gray-200 p-2 w-1/4"
+                    placeholder="article">
+            </div>
+            <div class="mb-4">
                 <textarea type="text" v-model="entries.product.description" class="border border-gray-200 p-2 w-1/4"
                     placeholder="description"></textarea>
             </div>
