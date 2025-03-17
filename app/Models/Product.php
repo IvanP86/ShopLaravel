@@ -51,4 +51,9 @@ class Product extends Model
     //     $filter = new ProductFilter();
     //     return $filter->apply($builder, $data);
     // }
+
+    public function getHasChildrenAttribute(): bool
+    {
+        return $this->children()->exists();
+    }
 }
