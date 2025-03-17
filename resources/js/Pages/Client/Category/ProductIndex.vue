@@ -11,7 +11,8 @@
                             <div v-for="value in param.param_values" :key="value" class="mb-2 flex items-center">
                                 <input @change="setFilter(param, value)" class="mr-2" type="checkbox" :value="value"
                                     :id="value">
-                                <label class="text-sm text-gray-300" :for="value">{{ value }}</label>
+                                <label v-if="param.label === 'color'" :style="`background: ${value}; width:32px; height:16px`" class="block text-sm text-gray-300" :for="value"></label>
+                                <label v-if="param.label !== 'color'" class="text-sm text-gray-300" :for="value" v-html="value"></label>
                             </div>
                         </div>
                     </div>
