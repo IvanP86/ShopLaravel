@@ -6,7 +6,7 @@
         </aside>
         <article class="w-3/4 bg-gray-50 p-4">
             <div class="grid grid-cols-3 gap-4">
-                <ProductItem v-for="product in products" :product="product"></ProductItem>
+                <ProductItem v-for="product in products" :key="product" :product="product"></ProductItem>
             </div>
         </article>
 </template>

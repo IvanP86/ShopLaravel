@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
 #[ObservedBy(ProductObserver::class)]
@@ -52,8 +53,23 @@ class Product extends Model
     //     return $filter->apply($builder, $data);
     // }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function getHasChildrenAttribute(): bool
     {
         return $this->children()->exists();
+    }
+    public function getGroupedParamsAttribute(): array
+    {
+        return $this->params->groupBy('title')->map(function ($param) {
+            return [
+                'title' => $param->first()->title,
+                'label' => $param->first()->label,
+                'values' => $param->pluck('pivot.value')->toArray()
+            ];
+        })->values()->toArray();
     }
 }

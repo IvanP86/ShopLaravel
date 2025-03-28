@@ -7,7 +7,7 @@ use App\Http\Resources\Param\ParamWithPivotValueResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductWithGropedParamResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -31,7 +31,7 @@ class ProductResource extends JsonResource
             'has_children' => $this->has_children,
             'images' => ImageResouce::collection($this->images)->resolve(),
             'preview_image_url' => $this->preview_image_url,
-            'params' => ParamWithPivotValueResource::collection($this->params)->resolve()
+            'params' => $this->grouped_params
         ];
     }
 }
