@@ -1,24 +1,15 @@
 <template>
     <article class="w-3/4 bg-gray-50 p-4">
-        <!--<div class="mb-4">
-            <template v-for="breadcrumb in breadCrumbs" :key="breadcrumb">
-                <Link :href="route('client.categories.products.index', breadcrumb.id)">
-                {{ breadcrumb.title }}
-                </Link>
-                <span> / </span>
-            </template>
-            <span>{{ product.title }}</span>
-        </div>-->
         <BreadCrumbs :breadCrumbs="breadCrumbs" :title="product.title"></BreadCrumbs>
         <div class="flex">
             <div class="flex mr-4">
                 <div style="width: 100px;" class="mr-4">
                     <div v-for="image in product.images" :key="image" class="mb-4">
-                        <img :src="image.url" :alt="product.title">
+                        <img class="cursor-pointer" @click="selectedImage = image" :src="image.url" :alt="product.title">
                     </div>
                 </div>
-                <div v-if="product.preview_image_url">
-                    <img :src="product.preview_image_url" :alt="product.title">
+                <div v-if="selectedImage">
+                    <img :src="selectedImage.url" :alt="product.title">
                 </div>
             </div>
             <div>
@@ -86,6 +77,14 @@ export default {
     props: {
         product: Object,
         breadCrumbs: Array
+    },
+
+    data() {
+        return {
+            selectedImage: {
+                url: this.product.preview_image_url
+            }
+        }
     }
 
 }
