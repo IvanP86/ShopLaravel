@@ -2,6 +2,23 @@
     <aside class="w-1/4 bg-gray-900 min-h-screen">
         <nav class="p-4">
             <div>
+                <div class="mb-8">
+                    <div>
+                        <h3 class="text-white mb-2">Категории</h3>
+                    </div>
+                    <div>
+                        <div v-if="breadCrumbs.length > 0">
+                            <Link v-for="breadCrumb in breadCrumbs" :href="route('client.categories.products.index', breadCrumb.id)" 
+                            :key="breadCrumb" class="text-gray-200 block py-2 border-b border-gray-600 text-sm"> < {{ breadCrumb.title }}</Link>
+                        </div>
+                    </div>
+                    <div>
+                        <div v-if="categoryChildren.length > 0">
+                            <Link v-for="categoryChild in categoryChildren" :href="route('client.categories.products.index', categoryChild.id)" 
+                            :key="categoryChild" class="text-gray-200 block py-2 border-b border-gray-600 text-sm"> {{ categoryChild.title }}</Link>
+                        </div>
+                    </div>
+                </div>
                 <template v-for="param in params" :key="param">
                     <div v-if="param.filter_type === 3" class="mb-4 pb-4 border-b border-gray-600">
                         <div>
@@ -11,8 +28,11 @@
                             <div v-for="value in param.param_values" :key="value" class="mb-2 flex items-center">
                                 <input @change="setFilter(param, value)" class="mr-2" type="checkbox" :value="value"
                                     :id="value">
-                                <label v-if="param.label === 'color'" :style="`background: ${value}; width:32px; height:16px`" class="block text-sm text-gray-300" :for="value"></label>
-                                <label v-if="param.label !== 'color'" class="text-sm text-gray-300" :for="value" v-html="value"></label>
+                                <label v-if="param.label === 'color'"
+                                    :style="`background: ${value}; width:32px; height:16px`"
+                                    class="block text-sm text-gray-300" :for="value"></label>
+                                <label v-if="param.label !== 'color'" class="text-sm text-gray-300" :for="value"
+                                    v-html="value"></label>
                             </div>
                         </div>
                     </div>
@@ -65,7 +85,8 @@ export default {
         products: Array,
         breadCrumbs: Array,
         category: Object,
-        params: Array
+        params: Array,
+        categoryChildren: Array
     },
 
     data() {
@@ -110,7 +131,7 @@ export default {
 
         clean(obj) {
             Object.keys(obj).forEach(key => {
-                if (!obj[key]){
+                if (!obj[key]) {
                     delete obj[key]
                 }
             })

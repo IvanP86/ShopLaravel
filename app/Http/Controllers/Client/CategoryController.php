@@ -25,7 +25,8 @@ class CategoryController extends Controller
             return $products;
         }
         $breadCrumbs = CategoryResource::collection(CategoryService::getCategoryParents($category)->reverse())->resolve();
+        $categoryChildren = CategoryResource::collection($category->children)->resolve();
         $category = CategoryResource::make($category)->resolve();
-        return inertia('Client/Category/ProductIndex', compact('products', 'breadCrumbs', 'category', 'params'));
+        return inertia('Client/Category/ProductIndex', compact('products', 'categoryChildren', 'breadCrumbs', 'category', 'params'));
     }
 }
