@@ -1,5 +1,7 @@
 <template>
     <div class="mb-4">
+        <Link :href="route('client.categories.index')">Categories</Link>
+        <span> / </span>
         <template v-for="breadcrumb in breadCrumbs" :key="breadcrumb">
             <Link :href="route('client.categories.products.index', breadcrumb.id)">
             {{ breadcrumb.title }}
@@ -15,7 +17,7 @@ import { Link } from '@inertiajs/vue3';
 export default {
     name: "Breadcrumb",
 
-    props:{
+    props: {
         breadCrumbs: Array,
         title: String
     },

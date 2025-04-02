@@ -9,7 +9,7 @@
                     <div>
                         <div v-if="breadCrumbs.length > 0">
                             <Link v-for="breadCrumb in breadCrumbs" :href="route('client.categories.products.index', breadCrumb.id)" 
-                            :key="breadCrumb" class="text-gray-200 block py-2 border-b border-gray-600 text-sm"> < {{ breadCrumb.title }}</Link>
+                            :key="breadCrumb" class="text-gray-200 block py-2 border-b border-gray-600 text-sm"> &lt; {{ breadCrumb.title }}</Link>
                         </div>
                     </div>
                     <div>
