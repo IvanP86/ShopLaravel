@@ -28,6 +28,7 @@ class ProductWithGropedParamResource extends JsonResource
             'qty' => $this->qty,
             'category_id' => $this->category_id,
             'product_group_id' => $this->product_group_id,
+            'group_products' => ProductResource::collection($this->groupProducts)->resolve(),
             'has_children' => $this->has_children,
             'images' => ImageResouce::collection($this->images)->resolve(),
             'preview_image_url' => $this->preview_image_url,
