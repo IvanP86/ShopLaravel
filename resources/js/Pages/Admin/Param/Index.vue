@@ -12,6 +12,7 @@
                         <th class="border border-gray-300 px-4 py-2">Title</th>
                         <th class="border border-gray-300 px-4 py-2">Filter Type</th>
                         <th class="border border-gray-300 px-4 py-2">Filter Type Title</th>
+                        <th class="border border-gray-300 px-4 py-2">Visability</th>
                         <th class="border border-gray-300 px-4 py-2">Action</th>
                     </tr>
                 </thead>
@@ -23,6 +24,7 @@
                         </td>
                         <td class="border border-gray-300 px-4 py-2">{{ param.filter_type }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ param.filter_type_title }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ param.is_show_in_card }}</td>
                         <td class="border border-gray-300 px-4 py-3 flex">
                             <Link :href="route('admin.params.edit', param.id)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

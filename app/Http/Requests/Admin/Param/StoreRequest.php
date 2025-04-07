@@ -24,7 +24,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'filter_type' => 'required|integer|in:'.ParamFilterTypeEnum::valuesAsString()
+            'filter_type' => 'required|integer|in:'.ParamFilterTypeEnum::valuesAsString(),
+            'is_show_in_card' => 'boolean'
         ];
     }
 }

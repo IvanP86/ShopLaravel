@@ -10,9 +10,14 @@
             </div>
             <div class="mb-4">
                 <select class="border border-gray-200 p-2 w-1/4" v-model="param.filter_type">
-                    <option value="null" disabled selected>Choose  filter type</option>
-                    <option  v-for="filterType in filterTypes" :value="filterType.value">{{ filterType.title }}</option>
+                    <option value="null" disabled selected>Choose filter type</option>
+                    <option v-for="filterType in filterTypes" :key="filterType" :value="filterType.value">{{ filterType.title }}</option>
                 </select>
+            </div>
+            <div class="mb-4">
+                <div class="mb-2">Parameter Visibility</div>
+                <input class="mr-4" type="checkbox" id="checkbox" v-model="param.is_show_in_card" />
+                <label for="checkbox">{{ param.is_show_in_card }}</label>
             </div>
             <div class="mb-4">
                 <a @click.prevent="storeParam"
@@ -39,7 +44,8 @@ export default {
     data() {
         return {
             param: {
-                filter_type: null
+                filter_type: null,
+                is_show_in_card: false
             }
         }
     },
@@ -49,7 +55,7 @@ export default {
             axios.post(route('admin.params.store'), this.param)
                 .then(res => {
                     this.param = {
-                        filter_type : null
+                        filter_type: null
                     }
                 })
         }
