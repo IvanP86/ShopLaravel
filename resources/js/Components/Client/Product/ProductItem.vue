@@ -6,23 +6,27 @@
             <p>{{ product.price }}</p>
             <p>{{ product.old_price }}</p>
         </div>
-        <div>
+        <!--<div>
             <a href="#" class="block p-4 bg-indigo-600 text-white text-center">Buy</a>
-        </div>
+        </div>-->
+        <StoreAndUpdateCart :product="product"></StoreAndUpdateCart>
     </div>
 </template>
 
 <script>
 import { Link } from '@inertiajs/vue3';
+import StoreAndUpdateCart from '@/Components/Client/Cart/StoreAndUpdateCart.vue';
+
 export default {
     name: "ProductItem",
 
     props: {
-        product: Object
+        product: Object,
     },
 
     components: {
-        Link
+        Link,
+        StoreAndUpdateCart
     }
 }
 </script>

@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="param in paramsData">
+                    <tr v-for="param in paramsData" :key="param">
                         <td class="border border-gray-300 px-4 py-2">{{ param.id }}</td>
                         <td class="border border-gray-300 px-4 py-2">
                             <Link :href="route('admin.params.show', param.id)">{{ param.title }}</Link>
