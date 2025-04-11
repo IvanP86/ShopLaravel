@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category in categoriesData">
+                    <tr v-for="category in categoriesData" :key="category">
                         <td class="border border-gray-300 px-4 py-2">{{ category.id }}</td>
                         <td class="border border-gray-300 px-4 py-2">
                             <Link :href="route('admin.categories.show', category.id)">{{ category.title }}</Link>
