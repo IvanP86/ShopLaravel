@@ -15,7 +15,8 @@
                 <tbody>
                     <tr v-for="cart in cartsData" :key="cart">
                         <td class="border border-gray-300 px-4 py-2">{{ cart.id }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ cart.product_title }}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <Link :href="route('client.products.show', cart.product_id)">{{ cart.product_title }}</Link></td>
                         <td class="border border-gray-300 px-4 py-2">
                             <img class="w-24" :src="cart.product_image_url" :alt="cart.product_title">
                         </td>
@@ -57,6 +58,10 @@ export default {
 
     props: {
         carts: Array
+    },
+
+    components:{
+        Link
     },
 
     data() {

@@ -25,14 +25,6 @@ class ProductController extends Controller
     {
         $breadCrumbs = CategoryService::getCategoryParents($product->category);
         $breadCrumbs = CategoryResource::collection($breadCrumbs->reverse()->push($product->category))->resolve();
-        // $paramProducts = ParamProduct::whereIn('product_id', $product->siblingProducts->pluck('id'))->with('param')->get();
-        // $paramProducts = $paramProducts->groupBy('param_id')->map(function($paramProductItem){
-        //     return [
-        //         'title' => $paramProductItem->first()->title,
-        //         'data' => $paramProductItem->toArray()
-        //     ];
-        // });
-        // $paramProducts = array_values($paramProducts->toArray());
         $paramProducts = ParamProductService::getGroupedByParamArray($product);
         $product = ProductWithGropedParamResource::make($product)->resolve();
         return inertia('Client/Product/Show', compact('product', 'breadCrumbs', 'paramProducts'));

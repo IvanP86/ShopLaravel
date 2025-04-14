@@ -6,9 +6,6 @@
             <p>{{ product.price }}</p>
             <p>{{ product.old_price }}</p>
         </div>
-        <!--<div>
-            <a href="#" class="block p-4 bg-indigo-600 text-white text-center">Buy</a>
-        </div>-->
         <StoreAndUpdateCart :product="product"></StoreAndUpdateCart>
     </div>
 </template>
