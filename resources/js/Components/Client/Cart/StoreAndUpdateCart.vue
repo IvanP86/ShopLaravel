@@ -36,13 +36,15 @@ export default {
         storeCart() {
             axios.post(route('client.carts.store'), this.cart)
                 .then(res => {
-                    // this.cartId = res.data.id
                     this.product.cart = res.data
+                    this.$page.props.auth.user.carts_total_sum = this.$page.props.auth.user.carts_total_sum + res.data.total_sum
+
                 })
         },
         updateCart() {
             axios.patch(route('client.carts.update', this.product.cart.id), this.cart)
                 .then(res => {
+                    this.$page.props.auth.user.carts_total_sum = this.$page.props.auth.user.carts_total_sum + res.data.total_sum - this.product.cart.qty * this.product.price
                 })
         }
     }

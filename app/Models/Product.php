@@ -90,6 +90,7 @@ class Product extends Model
 
     public function cart(): HasOne
     {
-        return $this->hasOne(Cart::class)->where('user_id', auth()->user()->id);
+        return $this->hasOne(Cart::class)->where('user_id', auth()->user()->id)
+        ->whereNull('order_id');
     }
 }
