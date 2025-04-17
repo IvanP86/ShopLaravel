@@ -21,11 +21,14 @@ class ParamService
     public static function getParamsByCategories(Collection $collection): Collection
     {
         $array = [];
-        foreach ($collection->pluck('paramProducts') as $paramProduct) {
+        // foreach ($collection->pluck('paramProducts') as $paramProduct) {
+        //     $array = array_merge($array, $paramProduct->toArray());
+        // }
+        foreach ($collection->load('paramProducts')->pluck('paramProducts') as $paramProduct) {
             $array = array_merge($array, $paramProduct->toArray());
         }
         $array = collect($array);
-        $params = Param::whereIn('id', $array->pluck('param_id'))->get();
+        $params = Param::whereIn('id', $array->pluck('param_id')->unique())->get();
         $collect = $array->groupBy('param_id');
         foreach ($params as $param) {
             $param->param_values = $collect[$param->id]->unique('value')->sortBy('value')->pluck('value')->toArray();
