@@ -14,7 +14,6 @@ class OrderController extends Controller
     public function store(StoreRequest $request)
     {
         $order = OrderService::store();
-        // to_route('client.orders.transactions.create', $order->id);
         return redirect()->route('client.orders.transactions.create', $order->id);
     }
 

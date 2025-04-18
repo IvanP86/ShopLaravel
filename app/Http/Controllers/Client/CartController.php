@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\Cart\StoreRequest;
 use App\Http\Requests\Client\Cart\UpdateRequest;
-use App\Http\Resources\Cart\CartResource;
 use App\Http\Resources\Cart\CartWithProductResource;
 use App\Models\Cart;
 use App\Services\CartService;
@@ -23,7 +22,6 @@ class CartController extends Controller
     {
         $data = $request->validated();
         $cart = CartService::store($data);
-        // return CartResource::make($cart)->resolve();
         return CartWithProductResource::make($cart)->resolve();
     }
 

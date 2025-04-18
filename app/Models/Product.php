@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Filters\ProductFilter;
 use App\Models\Traits\HasFilter;
 use App\Observers\ProductObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -55,7 +54,6 @@ class Product extends Model
 
     public function getPreviewImageUrlAttribute(): null|string
     {
-        // return $this->images()->first()->url ?? null;
         return $this->images->first()->url ?? null;
     }
 
@@ -78,7 +76,6 @@ class Product extends Model
 
     public function getHasChildrenAttribute(): bool
     {
-        // return $this->children()->exists();
         return $this->children->contains('id', $this->id);
     }
     public function getGroupedParamsAttribute(): array

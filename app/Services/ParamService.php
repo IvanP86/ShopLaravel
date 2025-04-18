@@ -21,9 +21,6 @@ class ParamService
     public static function getParamsByCategories(Collection $collection): Collection
     {
         $array = [];
-        // foreach ($collection->pluck('paramProducts') as $paramProduct) {
-        //     $array = array_merge($array, $paramProduct->toArray());
-        // }
         foreach ($collection->load('paramProducts')->pluck('paramProducts') as $paramProduct) {
             $array = array_merge($array, $paramProduct->toArray());
         }
